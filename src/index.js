@@ -50,6 +50,37 @@ const openPopup = (pokemon) => {
                 const description = document.createElement('p');
                 description.textContent = pokemon.description;
 
+                const commentSection = document.createElement('div');
+                commentSection.classList.add('comment-section');
+
+                const nameLabel = document.createElement('label');
+                nameLabel.textContent = 'Your Name:';
+                const nameInput = document.createElement('input');
+                nameInput.type = 'text';
+
+                const commentLabel = document.createElement('label');
+                commentLabel.textContent = 'Your Comment:';
+                const commentInput = document.createElement('textarea');
+
+                const commentButton = document.createElement('button');
+                commentButton.classList.add('comment');
+                commentButton.textContent = 'Comment';
+                commentButton.addEventListener('click', () => {
+                    const commentText = commentInput.value;
+                    if (commentText.trim() !== '') {
+                        const commentItem = document.createElement('div');
+                        commentItem.classList.add('comment-item');
+                        const commenterName = document.createElement('p');
+                        commenterName.textContent = nameInput.value;
+                        const commentTextElement = document.createElement('p');
+                        commentTextElement.textContent = commentText;
+                        commentItem.appendChild(commenterName);
+                        commentItem.appendChild(commentTextElement);
+                        commentSection.appendChild(commentItem);
+                        commentInput.value = '';
+                    }
+                });
+
                 const closePopupButton = document.createElement('button');
                 closePopupButton.classList.add('close-popup');
                 closePopupButton.textContent = 'Close';
@@ -59,7 +90,13 @@ const openPopup = (pokemon) => {
 
                 popupContent.appendChild(img);
                 popupContent.appendChild(description);
-                popupContent.appendChild(closePopupButton);
+                commentSection.appendChild(nameLabel);
+                commentSection.appendChild(nameInput);
+                commentSection.appendChild(commentLabel);
+                commentSection.appendChild(commentInput);
+                commentSection.appendChild(commentButton);
+                commentSection.appendChild(closePopupButton);
+                popupContent.appendChild(commentSection);
 
                 popup.appendChild(popupContent);
                 document.body.appendChild(popup);
@@ -71,6 +108,8 @@ const openPopup = (pokemon) => {
         console.error('Error opening popup:', error);
     }
 };
+
+
 const updateLikeCount = (likeButton, pokemonName) => {
     let likeCount = localStorage.getItem(pokemonName) || 0;
 
