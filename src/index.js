@@ -21,7 +21,10 @@ const pokemonCards = [
     { name: 'eevee', id: 133, description: 'A Normal-type Pokémon with multiple evolutionary paths.' },
     { name: 'dragonite', id: 149, description: 'A powerful Dragon/Flying-type Pokémon with a kind heart.' },
     { name: 'lapras', id: 131, description: 'A Water/Ice-type Pokémon known for its soothing song and serenity.' },
-    { name: 'machamp', id: 68, description: 'A Fighting-type Pokémon with impressive physical strength and power.' }
+    { name: 'machamp', id: 68, description: 'A Fighting-type Pokémon with impressive physical strength and power.' },
+    { name: 'meowth', id: 52, description: 'A Normal-type Pokémon known for its mischievous behavior and coin-collecting.' },
+    { name: 'magikarp', id: 129, description: 'A weak Water-type Pokémon that can evolve into a powerful Gyarados.' },
+    { name: 'raichu', id: 26, description: 'The evolved form of Pikachu, Raichu is an Electric-type Pokémon.' },
 ];
 
 const openPopup = (pokemon) => {
@@ -68,7 +71,6 @@ const openPopup = (pokemon) => {
         console.error('Error opening popup:', error);
     }
 };
-
 const updateLikeCount = (likeButton, pokemonName) => {
     let likeCount = localStorage.getItem(pokemonName) || 0;
 
@@ -102,7 +104,7 @@ const fetchPokemon = async(pokemon) => {
         const likeButton = document.createElement('button');
         likeButton.classList.add('like');
         updateLikeCount(likeButton, pokemon.name);
-        // Add your custom styles for the like button here
+
 
         const commentButton = document.createElement('button');
         commentButton.classList.add('comment');
@@ -110,7 +112,7 @@ const fetchPokemon = async(pokemon) => {
         commentButton.addEventListener('click', () => {
             openPopup(pokemon);
         });
-        // Add your custom styles for the comment button here
+
 
         actionsDiv.appendChild(likeButton);
         actionsDiv.appendChild(commentButton);
