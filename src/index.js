@@ -27,88 +27,129 @@ const pokemonCards = [
     { name: 'raichu', id: 26, description: 'The evolved form of Pikachu, Raichu is an Electric-type Pokémon.' },
 ];
 
-const openPopup = (pokemon) => {
+const openPopup = async(pokemon) => {
     try {
-        const fetchPokemonDetails = async(pokemon) => {
-            const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemon.name}`);
-            const data = await response.json();
-            return data;
-        };
+        const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemon.name}`);
+        const data = await response.json();
 
-        fetchPokemonDetails(pokemon)
-            .then((data) => {
-                const popup = document.createElement('div');
-                popup.classList.add('popup');
+        const popup = document.createElement('div');
+        popup.classList.add('popup');
 
-                const popupContent = document.createElement('div');
-                popupContent.classList.add('popup-content');
+        const popupContent = document.createElement('div');
+        popupContent.classList.add('popup-content');
 
-                const img = document.createElement('img');
-                img.src = data.sprites.front_default;
-                img.alt = data.name;
+        const img = document.createElement('img');
 
-                const description = document.createElement('p');
-                description.textContent = pokemon.description;
+        img.src = data.sprites.front_default;
+        img.alt = data.name;
 
-                const commentSection = document.createElement('div');
-                commentSection.classList.add('comment-section');
+        const description = document.createElement('p');
+        description.textContent = pokemon.description;
 
-                const nameLabel = document.createElement('label');
-                nameLabel.textContent = 'Your Name:';
-                const nameInput = document.createElement('input');
-                nameInput.type = 'text';
+        const commentSection = document.createElement('div');
+        commentSection.classList.add('comment-section');
 
-                const commentLabel = document.createElement('label');
-                commentLabel.textContent = 'Your Comment:';
-                const commentInput = document.createElement('textarea');
+        const commentHeader = document.createElement('div');
+        commentHeader.classList.add('comment-header');
 
-                const commentButton = document.createElement('button');
-                commentButton.classList.add('comment');
-                commentButton.textContent = 'Comment';
-                commentButton.addEventListener('click', () => {
-                    const commentText = commentInput.value;
-                    if (commentText.trim() !== '') {
-                        const commentItem = document.createElement('div');
-                        commentItem.classList.add('comment-item');
-                        const commenterName = document.createElement('p');
-                        commenterName.textContent = nameInput.value;
-                        const commentTextElement = document.createElement('p');
-                        commentTextElement.textContent = commentText;
-                        commentItem.appendChild(commenterName);
-                        commentItem.appendChild(commentTextElement);
-                        commentSection.appendChild(commentItem);
-                        commentInput.value = '';
-                    }
+        const commentTitle = document.createElement('h2');
+        commentTitle.textContent = 'Comments';
+        commentTitle.style.fontSize = '20px';
+
+        const commentCount = document.createElement('p');
+        commentCount.textContent = `Total Comments: 0`;
+
+        commentHeader.appendChild(commentTitle);
+        commentHeader.appendChild(commentCount);
+
+        const nameLabel = document.createElement('label');
+        nameLabel.textContent = 'Your Name:';
+        const nameInput = document.createElement('input');
+        nameInput.type = 'text';
+
+        const commentLabel = document.createElement('label');
+        commentLabel.textContent = 'Your Comment:';
+        const commentInput = document.createElement('textarea');
+
+        const commentButton = document.createElement('button');
+        commentButton.classList.add('comment');
+        commentButton.textContent = 'Comment';
+        commentButton.addEventListener('click', () => {
+            const commentText = commentInput.value;
+            if (commentText.trim() !== '') {
+                const commenterName = nameInput.value;
+                const today = new Date().toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'numeric',
+                    day: 'numeric'
                 });
 
-                const closePopupButton = document.createElement('button');
-                closePopupButton.classList.add('close-popup');
-                closePopupButton.textContent = 'Close';
-                closePopupButton.addEventListener('click', () => {
-                    popup.remove();
-                });
+                const commentItem = document.createElement('div');
+                commentItem.classList.add('comment-item');
 
-                popupContent.appendChild(img);
-                popupContent.appendChild(description);
-                commentSection.appendChild(nameLabel);
-                commentSection.appendChild(nameInput);
-                commentSection.appendChild(commentLabel);
-                commentSection.appendChild(commentInput);
-                commentSection.appendChild(commentButton);
-                commentSection.appendChild(closePopupButton);
-                popupContent.appendChild(commentSection);
+                const commentContent = document.createElement('p');
+                commentContent.style.fontSize = '20px'; // Set font size to 10px
+                commentContent.textContent = `${today} / ${commenterName}: ${commentText}`;
 
-                popup.appendChild(popupContent);
-                document.body.appendChild(popup);
-            })
-            .catch((error) => {
-                console.error('Error fetching Pokémon details:', error);
-            });
+                commentItem.appendChild(commentContent);
+                commentSection.appendChild(commentItem);
+                commentInput.value = '';
+
+                const commentCountValue = parseInt(commentCount.textContent.split(':')[1].trim(), 10) + 1;
+                commentCount.textContent = `Total Comments: ${commentCountValue}`;
+
+                // Store the comment in the popup's local storage
+                const popupComments = JSON.parse(localStorage.getItem('popupComments')) || {};
+                if (!popupComments[pokemon.name]) {
+                    popupComments[pokemon.name] = [];
+                }
+                popupComments[pokemon.name].push({ date: today, author: commenterName, text: commentText });
+                localStorage.setItem('popupComments', JSON.stringify(popupComments));
+            }
+        });
+
+        const closePopupButton = document.createElement('button');
+        closePopupButton.classList.add('close-popup');
+        closePopupButton.textContent = 'Close';
+        closePopupButton.addEventListener('click', () => {
+            popup.remove();
+        });
+
+        popupContent.appendChild(img);
+        popupContent.appendChild(description);
+        commentSection.appendChild(commentHeader);
+        commentSection.appendChild(nameLabel);
+        commentSection.appendChild(nameInput);
+        commentSection.appendChild(commentLabel);
+        commentSection.appendChild(commentInput);
+        commentSection.appendChild(commentButton);
+        commentSection.appendChild(closePopupButton);
+        popupContent.appendChild(commentSection);
+
+        // Display existing comments for this popup
+        const popupComments = JSON.parse(localStorage.getItem('popupComments')) || {};
+        const storedComments = popupComments[pokemon.name] || [];
+        storedComments.forEach(commentData => {
+            const commentItem = document.createElement('div');
+            commentItem.classList.add('comment-item');
+
+            const commentContent = document.createElement('p');
+            commentContent.style.fontSize = '10px'; // Set font size to 10px
+            commentContent.textContent = `${commentData.date} / ${commentData.author}: ${commentData.text}`;
+
+            commentItem.appendChild(commentContent);
+            commentSection.appendChild(commentItem);
+        });
+
+        // Update total comment count
+        commentCount.textContent = `Total Comments: ${storedComments.length}`;
+
+        popup.appendChild(popupContent);
+        document.body.appendChild(popup);
     } catch (error) {
-        console.error('Error opening popup:', error);
+        console.error('Error fetching Pokémon details:', error);
     }
 };
-
 
 const updateLikeCount = (likeButton, pokemonName) => {
     let likeCount = localStorage.getItem(pokemonName) || 0;
