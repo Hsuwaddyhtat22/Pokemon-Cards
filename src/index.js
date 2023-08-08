@@ -1,7 +1,20 @@
 import './style.css';
+
 const itemContainer = document.getElementById('itemContainer');
 
 const pokemonCards = [
+    { name: 'bulbasaur', id: 1, description: 'A Grass/Poison-type Pokémon with a plant bulb on its back.' },
+    { name: 'ivysaur', id: 2, description: 'The evolved form of Bulbasaur, known for the large flower on its back.' },
+    { name: 'venusaur', id: 3, description: 'The final evolution of Bulbasaur, a powerful Grass/Poison-type Pokémon.' },
+    { name: 'squirtle', id: 7, description: 'A Water-type Pokémon that hides in its shell for protection.' },
+    { name: 'wartortle', id: 8, description: 'The evolved form of Squirtle, a Water-type Pokémon with impressive water cannons.' },
+    { name: 'blastoise', id: 9, description: 'The final evolution of Squirtle, a Water-type Pokémon with powerful water cannons on its back.' },
+    { name: 'charmander', id: 4, description: 'A Fire-type Pokémon known for the flame on the tip of its tail.' },
+    { name: 'charmeleon', id: 5, description: 'The evolved form of Charmander, a Fire-type Pokémon with a fiery personality.' },
+    { name: 'charizard', id: 6, description: 'A powerful Fire/Flying-type Pokémon with a fiery breath.' },
+    { name: 'pidgey', id: 16, description: 'A Normal/Flying-type Pokémon that is a common sight in many areas.' },
+    { name: 'pidgeotto', id: 17, description: 'The evolved form of Pidgey, a larger and more powerful Normal/Flying-type Pokémon.' },
+    { name: 'pidgeot', id: 18, description: 'The final evolution of Pidgey, a majestic Normal/Flying-type Pokémon.' },
     { name: 'eevee', id: 133, description: 'A Normal-type Pokémon with multiple evolutionary paths.' },
     { name: 'pikachu', id: 25, description: 'An Electric-type Pokémon known for its lightning bolt-shaped tail.' },
     { name: 'charizard', id: 6, description: 'A powerful Fire/Flying-type Pokémon with a fiery breath.' },
