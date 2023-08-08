@@ -1,4 +1,4 @@
-# To-do List
+# Pokemon Capstone Project
 
 <a name="readme-top"></a>
 
@@ -6,7 +6,7 @@
 
   <br/>
 
-  <img src="./src/assets/Leaderboard app.png">
+  <img src="./src/assets/pokemon2.jpg">
 
 </div>
 
@@ -27,7 +27,7 @@
 - [❓ FAQ](#faq)
 - [📝 License](#license)
 
-## 📖 Leaderboard is a app that updates the leaderboard using a API. 
+## 📖 Pokemon is an app that uses a API to get Pokemon by their names. 
 
 ## 🛠 Built With <a name="built-with">HTML, CSS and JavaScript</a>
 
@@ -43,7 +43,7 @@
 
 Some of the key features: 
 - Set up app using webpack.
-- Update the leaderboard using an API.
+- Update Pokemon using an API.
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -71,13 +71,13 @@ In order to run this project you need:
 
 Clone this repository to your desired folder:
 
-- git clone https://github.com/dvcorreia1984/leaderboard.git
+- git clone https://github.com/Hsuwaddyhtat22/Pokemon-Capstone-JS
 
 Example commands:
 
 ```sh
   cd my-folder
-  git https://github.com/dvcorreia1984/leaderboard.git
+  git https://github.com/Hsuwaddyhtat22/Pokemon-Capstone-JS
 
 ```
 
@@ -96,6 +96,13 @@ Must-Install-Project-with-the-Following-Programmes:
 
 ## 👥 Authors <a name="authors"></a>
 
+👤 **Hsu Waddy Htat**
+
+- GitHub: [@githubhandle](https://github.com/Hsuwaddyhtat22)
+- Twitter: [@twitterhandle](https://twitter.com/HtatWaddy83921)
+- LinkedIn: [LinkedIn](https://www.linkedin.com/mwlite/profile/in/hsu-waddy-313a40222)
+
+
 👤 **Victor Correia**
 
 - GitHub: [@githubhandle](https://github.com/dvcorreia1984)
@@ -113,7 +120,7 @@ Must-Install-Project-with-the-Following-Programmes:
 
 Contributions, issues, and feature requests are welcome!
 
-Feel free to check the [issues page](https://github.com/dvcorreia1984/leaderboard.git).
+Feel free to check the [issues page](https://github.com/Hsuwaddyhtat22/Pokemon-Capstone-JS).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
