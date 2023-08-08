@@ -3,7 +3,7 @@ import './style.css';
 const BASE_API_URL = 'https://pokeapi.co/api/v2';
 
 const itemContainer = document.getElementById('itemContainer');
-
+const itemCounter = document.getElementById('itemCounter');
 const pokemonCards = [
     { name: 'bulbasaur', id: 1, description: 'A Grass/Poison-type Pokémon with a plant bulb on its back.' },
     { name: 'ivysaur', id: 2, description: 'The evolved form of Bulbasaur, known for the large flower on its back.' },
@@ -224,6 +224,7 @@ const fetchPokemon = async(pokemon) => {
         itemDiv.appendChild(actionsDiv);
 
         itemContainer.appendChild(itemDiv);
+        itemCounter.textContent = `Total Cards: ${pokemonCards.length}`;
     } catch (error) {
         console.error('Error fetching Pokémon:', error);
     }
