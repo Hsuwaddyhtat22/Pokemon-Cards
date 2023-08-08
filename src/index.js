@@ -1,7 +1,9 @@
 import './style.css';
 
-const itemContainer = document.getElementById('itemContainer');
+const BASE_API_URL = 'https://pokeapi.co/api/v2';
 
+const itemContainer = document.getElementById('itemContainer');
+const itemCounter = document.getElementById('itemCounter');
 const pokemonCards = [
     { name: 'bulbasaur', id: 1, description: 'A Grass/Poison-type Pokémon with a plant bulb on its back.' },
     { name: 'ivysaur', id: 2, description: 'The evolved form of Bulbasaur, known for the large flower on its back.' },
@@ -169,26 +171,26 @@ const openPopup = async(pokemon) => {
         console.error('Error fetching Pokémon details:', error);
     }
 };
+const updateLikeCount = async(likeButton, pokemonName) => {
+    try {
+        let likeCount = localStorage.getItem(pokemonName) || 0;
 
-const updateLikeCount = (likeButton, pokemonName) => {
-    let likeCount = localStorage.getItem(pokemonName) || 0;
+        likeButton.textContent = `${likeCount} ${likeCount === '1' ? 'Like' : 'Likes'}`;
 
-    likeButton.textContent = `${likeCount} ${likeCount === '1' ? 'Like' : 'Likes'}`;
-
-    likeButton.addEventListener('click', () => {
-        likeCount++;
-        likeButton.textContent = `${likeCount} ${likeCount === 1 ? 'Like' : 'Likes'}`;
-        localStorage.setItem(pokemonName, likeCount);
-    });
+        likeButton.addEventListener('click', async() => {
+            likeCount++;
+            likeButton.textContent = `${likeCount} ${likeCount === 1 ? 'Like' : 'Likes'}`;
+            localStorage.setItem(pokemonName, likeCount);
+        });
+    } catch (error) {
+        console.error('Error updating like count:', error);
+    }
 };
 
 const fetchPokemon = async(pokemon) => {
     try {
-        const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemon.name}`);
+        const response = await fetch(`${BASE_API_URL}/pokemon/${pokemon.name}`);
         const data = await response.json();
-
-        let itemCount = 0;
-        const itemCounter = document.getElementById('itemCounter');
 
         const itemDiv = document.createElement('div');
         itemDiv.classList.add('item');
@@ -207,14 +209,12 @@ const fetchPokemon = async(pokemon) => {
         likeButton.classList.add('like');
         updateLikeCount(likeButton, pokemon.name);
 
-
         const commentButton = document.createElement('button');
         commentButton.classList.add('comment');
         commentButton.textContent = 'Comment';
         commentButton.addEventListener('click', () => {
             openPopup(pokemon);
         });
-
 
         actionsDiv.appendChild(likeButton);
         actionsDiv.appendChild(commentButton);
@@ -224,12 +224,13 @@ const fetchPokemon = async(pokemon) => {
         itemDiv.appendChild(actionsDiv);
 
         itemContainer.appendChild(itemDiv);
-        itemCount = pokemonCards.length;
-        itemCounter.textContent = `Total Cards: ${itemCount}`;
+        itemCounter.textContent = `Total Cards: ${pokemonCards.length}`;
     } catch (error) {
         console.error('Error fetching Pokémon:', error);
     }
 };
+
+
 
 pokemonCards.forEach((card) => {
     fetchPokemon(card);
