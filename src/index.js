@@ -9,19 +9,18 @@ const BASE_API_URL = 'https://pokeapi.co/api/v2';
 const itemContainer = document.getElementById('itemContainer');
 const itemCounter = document.getElementById('itemCounter');
 
-const updateLikeCount = async (likeButton, pokemonName) => {
+const updateLikeCount = async (likeButton, pokemonName, initialLikeCount) => {
   try {
-    let likeCount = localStorage.getItem(pokemonName) || 0;
+    let likeCount = initialLikeCount;
 
     likeButton.textContent = `${likeCount} ${likeCount === '1' ? 'Like' : 'Likes'}`;
 
     likeButton.addEventListener('click', async () => {
-      likeCount ++;
+      likeCount++;
       likeButton.textContent = `${likeCount} ${likeCount === 1 ? 'Like' : 'Likes'}`;
-      localStorage.setItem(pokemonName, likeCount);
+      // localStorage.setItem(pokemonName, likeCount);
 
       await addLike(pokemonName);
-
     });
   } catch (error) {
     console.error('Error updating like count:', error);
@@ -48,7 +47,10 @@ const fetchPokemon = async (pokemon) => {
 
     const likeButton = document.createElement('button');
     likeButton.classList.add('like');
-    updateLikeCount(likeButton, pokemon.name);
+
+    const initialLikeCount = await getLikes(pokemon.name);
+    console.log('Initial likes for', pokemon.name, ':', initialLikeCount);
+    updateLikeCount(likeButton, pokemon.name, initialLikeCount);
 
     const commentButton = document.createElement('button');
     commentButton.classList.add('comment');
