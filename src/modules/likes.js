@@ -1,14 +1,20 @@
 import { baseURL, appId } from './involveapi.js';
 
-const requestOptions = {
-  method: 'GET',
-  redirect: 'follow'
-};
+const getLikes = async () => {
+  try {
+    const response = await fetch(`${baseURL}apps/${appId}/likes/`);
+    if (response.status === 200) {
+      const likesData = await response.json();
+      console.log('Likes:', likesData);
+    } else {
+      console.log('Failed to get likes.');
+    }
+  } catch (error) {
+    console.error('An error occurred:', error.message);
+  }
+}
 
-fetch("https://us-central1-involvement-api.cloudfunctions.net/capstoneApi/apps/sfozB4S7vDGGPXQ2BqJy/likes", requestOptions)
-  .then(response => response.text())
-  .then(result => console.log(result))
-  .catch(error => console.log('error', error));
+getLikes();
 
 // add a like to the API
 const addLike = async (id) => {
@@ -23,4 +29,4 @@ const addLike = async (id) => {
   });
 };
 
-export default addLike;
+export { addLike, getLikes };
