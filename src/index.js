@@ -19,8 +19,6 @@ const updateLikeCount = async (likeButton, pokemonName) => {
       likeButton.textContent = `${likeCount} ${likeCount === 1 ? 'Like' : 'Likes'}`;
       localStorage.setItem(pokemonName, likeCount);
 
-      // Update the API
-      likeCount = await get(addLike(pokemonName), 'data.likes', 0);
       await addLike(pokemonName);
     });
   } catch (error) {
