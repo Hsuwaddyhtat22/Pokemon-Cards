@@ -27,7 +27,7 @@
 - [❓ FAQ](#faq)
 - [📝 License](#license)
 
-## 📖 Pokemon is an app that uses a API to get Pokemon by their names. 
+## 📖 Pokemon is an app that uses an API to get Pokemon by their names. 
 
 ## 🛠 Built With <a name="built-with">HTML, CSS and JavaScript</a>
 
@@ -42,7 +42,7 @@
 ### Key Features <a name="key-features">
 
 Some of the key features: 
-- Set up app using webpack.
+- Set up the App using Webpack.
 - Update Pokemon using an API.
 
 
