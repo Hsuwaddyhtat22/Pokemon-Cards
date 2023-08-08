@@ -1,3 +1,4 @@
+import addLike from './modules/likes.js';
 import './style.css';
 
 const BASE_API_URL = 'https://pokeapi.co/api/v2';
@@ -177,6 +178,7 @@ const updateLikeCount = async (likeButton, pokemonName) => {
       likeCount += 1;
       likeButton.textContent = `${likeCount} ${likeCount === 1 ? 'Like' : 'Likes'}`;
       localStorage.setItem(pokemonName, likeCount);
+      await addLike(pokemonName);
     });
   } catch (error) {
     console.error('Error updating like count:', error);
@@ -229,3 +231,5 @@ const fetchPokemon = async (pokemon) => {
 pokemonCards.forEach((card) => {
   fetchPokemon(card);
 });
+
+
