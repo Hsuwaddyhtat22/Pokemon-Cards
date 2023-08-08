@@ -1,6 +1,4 @@
 import './style.css';
-
-
 const itemContainer = document.getElementById('itemContainer');
 
 const pokemonCards = [
@@ -35,6 +33,8 @@ const openPopup = async(pokemon) => {
         const popup = document.createElement('div');
         popup.classList.add('popup');
 
+
+
         const popupContent = document.createElement('div');
         popupContent.classList.add('popup-content');
 
@@ -58,23 +58,28 @@ const openPopup = async(pokemon) => {
 
         const commentCount = document.createElement('p');
         commentCount.textContent = `Total Comments: 0`;
+        commentCount.style.fontSize = '20px';
 
         commentHeader.appendChild(commentTitle);
         commentHeader.appendChild(commentCount);
 
         const nameLabel = document.createElement('label');
         nameLabel.textContent = 'Your Name:';
+        nameLabel.style.fontSize = '20px';
         const nameInput = document.createElement('input');
         nameInput.type = 'text';
 
         const commentLabel = document.createElement('label');
         commentLabel.textContent = 'Your Comment:';
+        commentLabel.style.fontSize = '20px';
         const commentInput = document.createElement('textarea');
+
 
         const commentButton = document.createElement('button');
         commentButton.classList.add('comment');
         commentButton.textContent = 'Comment';
         commentButton.addEventListener('click', () => {
+
             const commentText = commentInput.value;
             if (commentText.trim() !== '') {
                 const commenterName = nameInput.value;
@@ -88,7 +93,7 @@ const openPopup = async(pokemon) => {
                 commentItem.classList.add('comment-item');
 
                 const commentContent = document.createElement('p');
-                commentContent.style.fontSize = '20px'; // Set font size to 10px
+                commentContent.style.fontSize = '20px';
                 commentContent.textContent = `${today} / ${commenterName}: ${commentText}`;
 
                 commentItem.appendChild(commentContent);
@@ -134,7 +139,8 @@ const openPopup = async(pokemon) => {
             commentItem.classList.add('comment-item');
 
             const commentContent = document.createElement('p');
-            commentContent.style.fontSize = '10px'; // Set font size to 10px
+            commentContent.style.fontSize = '15px';
+            commentContent.style.color = 'green';
             commentContent.textContent = `${commentData.date} / ${commentData.author}: ${commentData.text}`;
 
             commentItem.appendChild(commentContent);
@@ -167,6 +173,9 @@ const fetchPokemon = async(pokemon) => {
     try {
         const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemon.name}`);
         const data = await response.json();
+
+        let itemCount = 0;
+        const itemCounter = document.getElementById('itemCounter');
 
         const itemDiv = document.createElement('div');
         itemDiv.classList.add('item');
@@ -202,6 +211,8 @@ const fetchPokemon = async(pokemon) => {
         itemDiv.appendChild(actionsDiv);
 
         itemContainer.appendChild(itemDiv);
+        itemCount = pokemonCards.length;
+        itemCounter.textContent = `Total Cards: ${itemCount}`;
     } catch (error) {
         console.error('Error fetching Pokémon:', error);
     }
