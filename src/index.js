@@ -3,6 +3,7 @@ import pokemonCards from './modules/cards';
 import { addLike, getLikes } from './modules/likes.js';
 import openPopup from './modules/popup.js';
 import { get } from 'lodash';
+import { addComment, getComments } from './modules/comments';
 
 const BASE_API_URL = 'https://pokeapi.co/api/v2';
 
@@ -35,6 +36,9 @@ const fetchPokemon = async (pokemon) => {
     const itemDiv = document.createElement('div');
     itemDiv.classList.add('item');
 
+    const name = document.createElement('h2');
+    name.textContent = data.name;
+
     const img = document.createElement('img');
     img.src = data.sprites.front_default;
     img.alt = data.name;
@@ -49,7 +53,6 @@ const fetchPokemon = async (pokemon) => {
     likeButton.classList.add('like');
 
     const initialLikeCount = await getLikes(pokemon.name);
-    console.log('Initial likes for', pokemon.name, ':', initialLikeCount);
     updateLikeCount(likeButton, pokemon.name, initialLikeCount);
 
     const commentButton = document.createElement('button');
@@ -62,6 +65,7 @@ const fetchPokemon = async (pokemon) => {
     actionsDiv.appendChild(likeButton);
     actionsDiv.appendChild(commentButton);
 
+    itemDiv.appendChild(name);
     itemDiv.appendChild(img);
     itemDiv.appendChild(description);
     itemDiv.appendChild(actionsDiv);
@@ -76,5 +80,3 @@ const fetchPokemon = async (pokemon) => {
 pokemonCards.forEach((card) => {
   fetchPokemon(card);
 });
-
-getLikes(pokemonName);

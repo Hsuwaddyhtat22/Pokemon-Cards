@@ -1,3 +1,5 @@
+import { addComment, getComments } from './comments.js';
+
 const openPopup = async (pokemon) => {
   try {
     const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemon.name}`);
@@ -10,7 +12,6 @@ const openPopup = async (pokemon) => {
     popupContent.classList.add('popup-content');
 
     const img = document.createElement('img');
-
     img.src = data.sprites.front_default;
     img.alt = data.name;
 
@@ -48,37 +49,46 @@ const openPopup = async (pokemon) => {
     const commentButton = document.createElement('button');
     commentButton.classList.add('comment');
     commentButton.textContent = 'Comment';
-    commentButton.addEventListener('click', () => {
+
+    commentButton.addEventListener('click', async () => {
       const commentText = commentInput.value;
       if (commentText.trim() !== '') {
         const commenterName = nameInput.value;
-        const today = new Date().toLocaleDateString('en-US', {
-          year: 'numeric',
-          month: 'numeric',
-          day: 'numeric',
-        });
 
-        const commentItem = document.createElement('div');
-        commentItem.classList.add('comment-item');
+        // Call the addComment function to add the comment to the API
+        const commentAdded = await addComment(pokemon.name, commenterName, commentText);
 
-        const commentContent = document.createElement('p');
-        commentContent.style.fontSize = '20px';
-        commentContent.textContent = `${today} / ${commenterName}: ${commentText}`;
+        if (commentAdded) {
+          // Comment added successfully
+          const today = new Date().toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'numeric',
+            day: 'numeric',
+          });
 
-        commentItem.appendChild(commentContent);
-        commentSection.appendChild(commentItem);
-        commentInput.value = '';
+          const commentItem = document.createElement('div');
+          commentItem.classList.add('comment-item');
 
-        const commentCountValue = parseInt(commentCount.textContent.split(':')[1].trim(), 10) + 1;
-        commentCount.textContent = `Total Comments: ${commentCountValue}`;
+          const commentContent = document.createElement('p');
+          commentContent.style.fontSize = '20px';
+          commentContent.textContent = `${today} / ${commenterName}: ${commentText}`;
 
-        // Store the comment in the popup's local storage
-        const popupComments = JSON.parse(localStorage.getItem('popupComments')) || {};
-        if (!popupComments[pokemon.name]) {
-          popupComments[pokemon.name] = [];
+          commentItem.appendChild(commentContent);
+          commentSection.appendChild(commentItem);
+          commentInput.value = '';
+
+          const commentCountValue = parseInt(commentCount.textContent.split(':')[1].trim(), 10) + 1;
+          commentCount.textContent = `Total Comments: ${commentCountValue}`;
+
+          // Fetch updated comments from the API and update comment count
+          const updatedComments = await getComments(pokemon.name);
+          if (updatedComments) {
+            commentCount.textContent = `Total Comments: ${updatedComments.length}`;
+          }
+        } else {
+          // Handle error if comment addition failed
+          console.error('Failed to add comment.');
         }
-        popupComments[pokemon.name].push({ date: today, author: commenterName, text: commentText });
-        localStorage.setItem('popupComments', JSON.stringify(popupComments));
       }
     });
 
@@ -100,6 +110,33 @@ const openPopup = async (pokemon) => {
     commentSection.appendChild(closePopupButton);
     popupContent.appendChild(commentSection);
 
+    const apiCommentsData = await getComments(pokemon.name);
+    if (apiCommentsData) {
+      apiCommentsData.forEach((commentData) => {
+        const commentItem = document.createElement('div');
+        commentItem.classList.add('comment-item');
+
+        const commentContent = document.createElement('p');
+        commentContent.style.fontSize = '15px';
+        commentContent.style.color = 'green';
+
+        // Use the commentData properties to construct the comment content
+        const commentDate = new Date(commentData.creation_date).toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'numeric',
+          day: 'numeric',
+        });
+
+        commentContent.textContent = `${commentDate} / ${commentData.username}: ${commentData.comment}`;
+
+        commentItem.appendChild(commentContent);
+        commentSection.appendChild(commentItem);
+      });
+
+      // Update total comment count
+      commentCount.textContent = `Total Comments: ${apiCommentsData.length}`;
+    }
+
     // Display existing comments for this popup
     const popupComments = JSON.parse(localStorage.getItem('popupComments')) || {};
     const storedComments = popupComments[pokemon.name] || [];
@@ -119,6 +156,7 @@ const openPopup = async (pokemon) => {
     // Update total comment count
     commentCount.textContent = `Total Comments: ${storedComments.length}`;
 
+    popupContent.appendChild(commentSection);
     popup.appendChild(popupContent);
     document.body.appendChild(popup);
   } catch (error) {
