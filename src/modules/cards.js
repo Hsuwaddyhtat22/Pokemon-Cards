@@ -1,5 +1,7 @@
 const pokemonCards = [
-  { name: 'bulbasaur', id: 1, likes: 0, description: 'A Grass/Poison-type Pokémon with a plant bulb on its back.' },
+  {
+    name: 'bulbasaur', id: 1, likes: 0, description: 'A Grass/Poison-type Pokémon with a plant bulb on its back.',
+  },
   { name: 'ivysaur', id: 2, description: 'The evolved form of Bulbasaur, known for the large flower on its back.' },
   { name: 'venusaur', id: 3, description: 'The final evolution of Bulbasaur, a powerful Grass/Poison-type Pokémon.' },
   { name: 'charmander', id: 4, description: 'A Fire-type Pokémon with a fiery personality.' },
