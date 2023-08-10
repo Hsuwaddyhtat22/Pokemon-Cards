@@ -25,6 +25,8 @@ const openPopup = async (pokemon) => {
     commentCount.style.fontSize = '20px';
     commentHeader.appendChild(commentTitle);
     commentHeader.appendChild(commentCount);
+
+    // Create the comment form
     const nameLabel = document.createElement('label');
     nameLabel.textContent = 'Your Name:';
     nameLabel.style.fontSize = '20px';
@@ -37,20 +39,20 @@ const openPopup = async (pokemon) => {
     const commentButton = document.createElement('button');
     commentButton.classList.add('comment');
     commentButton.textContent = 'Comment';
-    // eslint-disable-next-line consistent-return
     commentButton.addEventListener('click', async () => {
       const commentText = commentInput.value;
+
+      // Add comment to API
       if (commentText.trim() !== '') {
         const commenterName = nameInput.value;
-        // Call the addComment function to add the comment to the API
         const commentAdded = await addComment(pokemon.name, commenterName, commentText);
         if (commentAdded) {
-          // Comment added successfully
           const today = new Date().toLocaleDateString('en-US', {
             year: 'numeric',
             month: 'numeric',
             day: 'numeric',
           });
+
           const commentItem = document.createElement('div');
           commentItem.classList.add('comment-item');
           const commentContent = document.createElement('p');
@@ -58,26 +60,23 @@ const openPopup = async (pokemon) => {
           commentContent.textContent = `${today} / ${commenterName}: ${commentText}`;
           commentItem.appendChild(commentContent);
           commentSection.appendChild(commentItem);
+
           commentInput.value = '';
-          const commentCountValue = parseInt(commentCount.textContent.split(':')[1].trim(), 10) + 1;
-          commentCount.textContent = `Total Comments: ${commentCountValue}`;
-          // Fetch updated comments from the API and update comment count
-          const updatedComments = await getComments(pokemon.name);
-          if (updatedComments) {
-            commentCount.textContent = `Total Comments: ${updatedComments.length}`;
-          }
+          const totalCommentsCount = parseInt(commentCount.textContent.split(':')[1].trim(), 10) + 1;
+          commentCount.textContent = `Total Comments: ${totalCommentsCount}`;
         } else {
-          // Handle error if comment addition failed
-          return 0;
+          console.error('Error adding comment');
         }
       }
     });
+
     const closePopupButton = document.createElement('button');
     closePopupButton.classList.add('close-popup');
     closePopupButton.textContent = 'Close';
     closePopupButton.addEventListener('click', () => {
       popup.remove();
     });
+
     popupContent.appendChild(img);
     popupContent.appendChild(description);
     commentSection.appendChild(commentHeader);
@@ -88,48 +87,37 @@ const openPopup = async (pokemon) => {
     commentSection.appendChild(commentButton);
     commentSection.appendChild(closePopupButton);
     popupContent.appendChild(commentSection);
+
     const apiCommentsData = await getComments(pokemon.name);
-    if (apiCommentsData) {
-      apiCommentsData.forEach((commentData) => {
-        const commentItem = document.createElement('div');
-        commentItem.classList.add('comment-item');
-        const commentContent = document.createElement('p');
-        commentContent.style.fontSize = '15px';
-        commentContent.style.color = 'green';
-        // Use the commentData properties to construct the comment content
-        const commentDate = new Date(commentData.creation_date).toLocaleDateString('en-US', {
-          year: 'numeric',
-          month: 'numeric',
-          day: 'numeric',
-        });
-        commentContent.textContent = `${commentDate} / ${commentData.username}: ${commentData.comment}`;
-        commentItem.appendChild(commentContent);
-        commentSection.appendChild(commentItem);
-      });
-      // Update total comment count
-      commentCount.textContent = `Total Comments: ${apiCommentsData.length}`;
-    }
-    // Display existing comments for this popup
-    const popupComments = JSON.parse(localStorage.getItem('popupComments')) || {};
-    const storedComments = popupComments[pokemon.name] || [];
-    storedComments.forEach((commentData) => {
+
+    // Update the comment count text content with API comments count
+    commentCount.textContent = `Total Comments: ${apiCommentsData.length}`;
+
+    // Display API comments for this popup
+    apiCommentsData.forEach((commentData) => {
       const commentItem = document.createElement('div');
       commentItem.classList.add('comment-item');
       const commentContent = document.createElement('p');
       commentContent.style.fontSize = '15px';
       commentContent.style.color = 'green';
-      commentContent.textContent = `${commentData.date} / ${commentData.author}: ${commentData.text}`;
+
+      const commentDate = new Date(commentData.creation_date).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric',
+      });
+
+      commentContent.textContent = `${commentDate} / ${commentData.username}: ${commentData.comment}`;
       commentItem.appendChild(commentContent);
       commentSection.appendChild(commentItem);
     });
-    // Update total comment count
-    commentCount.textContent = `Total Comments: ${storedComments.length}`;
+
     popupContent.appendChild(commentSection);
     popup.appendChild(popupContent);
     document.body.appendChild(popup);
   } catch (error) {
-    // eslint-disable-next-line no-console
     console.error('Error fetching Pokémon details:', error);
   }
 };
+
 export default openPopup;

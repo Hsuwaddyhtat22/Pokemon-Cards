@@ -2,6 +2,7 @@ import './style.css';
 import pokemonCards from './modules/cards.js';
 import { addLike, getLikes } from './modules/likes.js';
 import openPopup from './modules/popup.js';
+
 const BASE_API_URL = 'https://pokeapi.co/api/v2';
 const itemContainer = document.getElementById('itemContainer');
 const itemCounter = document.getElementById('itemCounter');
@@ -71,3 +72,7 @@ const displaySortedPokemon = async() => {
     }
 };
 displaySortedPokemon();
+
+export default displaySortedPokemon;
+
+
