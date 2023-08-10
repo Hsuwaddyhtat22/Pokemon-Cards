@@ -2,10 +2,12 @@ import './style.css';
 import pokemonCards from './modules/cards.js';
 import { addLike, getLikes } from './modules/likes.js';
 import openPopup from './modules/popup.js';
+import countItems from './modules/itemscounter.js';
 
 const BASE_API_URL = 'https://pokeapi.co/api/v2';
 const itemContainer = document.getElementById('itemContainer');
 const itemCounter = document.getElementById('itemCounter');
+
 // eslint-disable-next-line consistent-return
 const updateLikeCount = async(likeButton, pokemonName, initialLikeCount) => {
     try {
@@ -59,6 +61,7 @@ const fetchAndDisplayPokemon = async(pokemon) => {
         console.error(`Error fetching ${pokemon.name}: ${error}`);
     }
 };
+
 const displaySortedPokemon = async() => {
     try {
         const sortedPokemon = [...pokemonCards].sort((a, b) => a.index - b.index);
@@ -73,6 +76,6 @@ const displaySortedPokemon = async() => {
 };
 displaySortedPokemon();
 
-export default displaySortedPokemon;
+export { fetchAndDisplayPokemon, displaySortedPokemon };
 
-
+countItems();
