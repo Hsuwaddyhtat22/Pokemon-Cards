@@ -1,15 +1,28 @@
-const pokemonCards = [
-  {
-    name: 'bulbasaur', id: 1, likes: 0, description: 'A Grass/Poison-type Pokémon with a plant bulb on its back.',
-  },
-  { name: 'ivysaur', id: 2, description: 'The evolved form of Bulbasaur, known for the large flower on its back.' },
-  { name: 'venusaur', id: 3, description: 'The final evolution of Bulbasaur, a powerful Grass/Poison-type Pokémon.' },
-  { name: 'charmander', id: 4, description: 'A Fire-type Pokémon with a fiery personality.' },
-  { name: 'charmeleon', id: 5, description: 'The evolved form of Charmander, a Fire-type Pokémon with a fiery personality.' },
-  { name: 'charizard', id: 6, description: 'A powerful Fire/Flying-type Pokémon with a fiery breath.' },
-  { name: 'squirtle', id: 7, description: 'A Water-type Pokémon that hides in its shell for protection.' },
-  { name: 'wartortle', id: 8, description: 'The evolved form of Squirtle, a Water-type Pokémon with impressive water cannons.' },
-  { name: 'blastoise', id: 9, description: 'The final evolution of Squirtle, a Water-type Pokémon with powerful water cannons on its back.' },
-];
+// cards.js
+
+const fetchOriginalPokemonData = async() => {
+    const numberOfPokemon = 42; // Change this to the desired number of Pokémon
+    const originalPokemonCards = [];
+
+    for (let i = 1; i <= numberOfPokemon; i++) {
+        const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${i}`);
+        const data = await response.json();
+
+        const speciesResponse = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${i}`);
+        const speciesData = await speciesResponse.json();
+
+        const description = speciesData.flavor_text_entries.find(entry => entry.language.name === 'en').flavor_text;
+
+        originalPokemonCards.push({
+            name: data.name,
+            id: data.id,
+            description: description,
+        });
+    }
+
+    return originalPokemonCards;
+};
+
+const pokemonCards = await fetchOriginalPokemonData();
 
 export default pokemonCards;
