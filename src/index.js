@@ -30,6 +30,7 @@ const fetchAndDisplayPokemon = async(pokemon) => {
         const data = await response.json();
         const itemDiv = document.createElement('div');
         itemDiv.classList.add('item');
+        itemDiv.setAttribute('id', `${pokemon.id}`)
         const name = document.createElement('h2');
         name.textContent = data.name;
         const img = document.createElement('img');

@@ -1,8 +1,9 @@
-// Count dom elements with class name "item"
 const countItems = () => {
-  const pokemonCount = document.getElementById('itemCounter');
-  const items = document.getElementsByClassName('item');
-  pokemonCount.textContent = `Total Pokémon: ${items.length}`;
+const items = document.querySelectorAll('.item');
+const arrFromSpread = [...items];
+console.log(arrFromSpread);
+const itemCount = items.length;
+console.log(items);
+console.log(`Total number of elements with class 'item': ${itemCount}`);
 };
-
 export default countItems;

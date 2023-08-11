@@ -1,7 +1,7 @@
 // cards.js
 
 const fetchOriginalPokemonData = async() => {
-    const numberOfPokemon = 42; // Change this to the desired number of Pokémon
+    const numberOfPokemon = 9; // Change this to the desired number of Pokémon
     const originalPokemonCards = [];
 
     for (let i = 1; i <= numberOfPokemon; i++) {
