@@ -19,6 +19,7 @@
     "license": "ISC",
     "devDependencies": {
         "@babel/plugin-transform-modules-commonjs": "^7.22.5",
+        "@testing-library/dom": "^9.3.1",
         "babel-eslint": "^10.1.0",
         "babel-jest": "^29.6.2",
         "css-loader": "^6.8.1",
@@ -27,6 +28,7 @@
         "eslint-plugin-import": "^2.28.0",
         "hint": "^7.1.10",
         "html-webpack-plugin": "^5.5.3",
+        "jsdom": "^22.1.0",
         "style-loader": "^3.3.3",
         "stylelint": "^13.13.1",
         "stylelint-config-standard": "^21.0.0",
