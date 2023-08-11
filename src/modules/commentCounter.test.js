@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { JSDOM } from 'jsdom';
 import countComments from './mentCounter.js';
 
