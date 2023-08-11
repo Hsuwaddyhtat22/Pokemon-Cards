@@ -1,11 +1,9 @@
-// Import the function to be tested
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { JSDOM } from 'jsdom';
 import countItems from './itemscounter.js';
 
 const { window } = new JSDOM('<!doctype html><html><body></body></html>');
 global.document = window.document;
-global.HTMLElement = window.HTMLElement; // Mock HTMLElement for textContent
+global.HTMLElement = window.HTMLElement;
 
 // Mock the DOM elements and methods for testing
 document.body.innerHTML = `
@@ -15,15 +13,13 @@ document.body.innerHTML = `
 `;
 
 // Mock the textContent property
-Object.defineProperty(HTMLElement.prototype, 'textContent', {
+Object.defineProperty(HTMLElement.prototype, 'textContentMock', {
   configurable: true,
   get() {
-    // eslint-disable-next-line no-underscore-dangle
-    return this._textContent || '';
+    return this.textContentMock || '';
   },
   set(value) {
-    // eslint-disable-next-line no-underscore-dangle
-    this._textContent = value;
+    this.textContentMock = value;
   },
 });
 
