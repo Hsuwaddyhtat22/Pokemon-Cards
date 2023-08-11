@@ -2,7 +2,6 @@
 import { JSDOM } from 'jsdom';
 import countItems from './itemscounter.js';
 
-
 const { window } = new JSDOM('<!doctype html><html><body></body></html>');
 global.document = window.document;
 global.HTMLElement = window.HTMLElement; // Mock HTMLElement for textContent
