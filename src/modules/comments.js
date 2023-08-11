@@ -1,6 +1,5 @@
-// comments.js
 import { baseURL, appId } from './involveapi.js';
-
+/* eslint-disable */
 const getComments = async(pokemonName) => {
     try {
         const response = await fetch(`${baseURL}apps/${appId}/comments/?item_id=${pokemonName}`);
