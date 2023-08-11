@@ -1,10 +1,11 @@
+/* eslint-disable no-await-in-loop */
 // cards.js
 
 const fetchOriginalPokemonData = async () => {
   const numberOfPokemon = 9; // Change this to the desired number of Pokémon
   const originalPokemonCards = [];
 
-  for (let i = 1; i <= numberOfPokemon; i++) {
+  for (let i = 1; i <= numberOfPokemon; i += 1) {
     const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${i}`);
     const data = await response.json();
 

@@ -1,6 +1,6 @@
 import { addComment, getComments } from './comments.js';
-import countComments from './mentCounter.js';
 
+// eslint-disable-next-line consistent-return
 const openPopup = async (pokemon) => {
   try {
     const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemon.name}`);
@@ -66,8 +66,6 @@ const openPopup = async (pokemon) => {
           commentInput.value = '';
           const totalCommentsCount = parseInt(commentCount.textContent.split(':')[1].trim(), 10) + 1;
           commentCount.textContent = `Total Comments: ${totalCommentsCount}`;
-        } else {
-          console.error('Error adding comment');
         }
       }
     });
@@ -118,7 +116,7 @@ const openPopup = async (pokemon) => {
     popup.appendChild(popupContent);
     document.body.appendChild(popup);
   } catch (error) {
-    console.error('Error fetching Pokémon details:', error);
+    return 0;
   }
 };
 
