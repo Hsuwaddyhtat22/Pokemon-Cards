@@ -1,7 +1,7 @@
 // Import the function to be tested
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { JSDOM } from 'jsdom';
 import countItems from './itemscounter.js';
-
 
 const { window } = new JSDOM('<!doctype html><html><body></body></html>');
 global.document = window.document;
@@ -18,9 +18,11 @@ document.body.innerHTML = `
 Object.defineProperty(HTMLElement.prototype, 'textContent', {
   configurable: true,
   get() {
+    // eslint-disable-next-line no-underscore-dangle
     return this._textContent || '';
   },
   set(value) {
+    // eslint-disable-next-line no-underscore-dangle
     this._textContent = value;
   },
 });
