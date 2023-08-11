@@ -1,21 +1,39 @@
+// Import the function to be tested
+import { JSDOM } from 'jsdom';
 import countItems from './itemscounter.js';
 
-// Write test for items counter
-describe('countItems', () => {
-  it('should return the number of items in an array', () => {
-    const arr = [1, 2, 3, 4, 5];
-    expect(countItems(arr)).toBe(5);
-  });
-}
-);
 
+const { window } = new JSDOM('<!doctype html><html><body></body></html>');
+global.document = window.document;
+global.HTMLElement = window.HTMLElement; // Mock HTMLElement for textContent
 
-// Write another test for items counter
-describe('countItems', () => {
-  it('should return the number of items in an array', () => {
-    const arr = [1, 2, 3, 4, 5, 6];
-    expect(countItems(arr)).toBe(6);
-  });
-}
-);
+// Mock the DOM elements and methods for testing
+document.body.innerHTML = `
+  <div id="itemCounter"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+`;
 
+// Mock the textContent property
+Object.defineProperty(HTMLElement.prototype, 'textContent', {
+  configurable: true,
+  get() {
+    return this._textContent || '';
+  },
+  set(value) {
+    this._textContent = value;
+  },
+});
+
+// Mock the querySelectorAll method
+document.querySelectorAll = jest.fn(() => document.getElementsByClassName('item'));
+
+// Test the countItems function
+test('countItems function updates item count correctly', () => {
+  countItems();
+
+  const itemCounter = document.getElementById('itemCounter');
+  const itemCount = document.getElementsByClassName('item').length;
+
+  expect(itemCounter.textContent).toBe(`Total Cards: ${itemCount}`);
+});
