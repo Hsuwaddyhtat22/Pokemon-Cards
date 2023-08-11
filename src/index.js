@@ -70,7 +70,7 @@ const displaySortedPokemon = async() => {
         pokemonDivs.forEach((pokemonDiv) => {
             itemContainer.appendChild(pokemonDiv);
         });
-        itemCounter.textContent = `Total Cards: ${sortedPokemon.length}`;
+        countItems();
     } catch (error) {
         console.error("Error displaying sorted Pokemon:", error);
     }
@@ -79,4 +79,3 @@ displaySortedPokemon();
 
 export { fetchAndDisplayPokemon, displaySortedPokemon };
 
-countItems();
