@@ -58,11 +58,10 @@ const fetchAndDisplayPokemon = async (pokemon) => {
     itemContainer.appendChild(itemDiv);
     return itemDiv;
   } catch (error) {
-    return 0;
+    console.error(`Error fetching ${pokemon.name}: ${error}`);
   }
 };
 
-// eslint-disable-next-line consistent-return
 const displaySortedPokemon = async () => {
   try {
     const sortedPokemon = [...pokemonCards].sort((a, b) => a.index - b.index);
@@ -72,7 +71,7 @@ const displaySortedPokemon = async () => {
     });
     countItems();
   } catch (error) {
-    return 0;
+    console.error('Error displaying sorted Pokemon:', error);
   }
 };
 displaySortedPokemon();
